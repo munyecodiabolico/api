@@ -1,0 +1,415 @@
+Cómo sería la estructura de carpetas de un proyecto web basado en la arquitectura rest api basado en react, express, sequelize y sequelize-auto:
+
+/
+  /api
+    /configs
+    /migrations
+    /middlewares
+    /seeders
+    /services
+    /utils
+    /tests
+    /controllers
+    /models
+    /routes
+  /client
+    /src
+      /components
+      /containers
+      /styles
+    /public 
+
+¿Qué habría en la carpeta containers?
+
+En la carpeta containers habría los componentes de React que estarían conectados a los datos de la API, por lo que se encargarían de la lógica de la aplicación y de la interfaz de usuario.
+
+¿Qué habría en la carpeta public?
+
+En la carpeta public se encontrarían los archivos necesarios para que funcione la aplicación web, como los archivos HTML, CSS y JavaScript.
+
+Replantea la estructura de carpetas si tuviera que tener migraciones, middlewares, seeders, services, utils y tests:
+
+¿Qué tendría en carpeta services?
+
+En la carpeta services habría código que se encargaría de realizar tareas específicas y que podrían ser reutilizadas en varios places de la aplicación. Por ejemplo, si se trata de una aplicación de e-commerce, un service podría ser responsable de calcular el precio total de un carrito de compras.
+
+¿Qué tendria la carpeta utils?
+
+En la carpeta utils habría código que podría ser útil en varios lugares de la aplicación. Por ejemplo, si se trata de una aplicación web, un util podría ser una función que se encarga de validar la dirección de correo electrónico de un usuario.
+
+¿Qué nombre podrían tener los archivos que hay en la carpeta utils?
+
+Los archivos que se encuentran en la carpeta utils podrían tener nombres como "validateEmail.js" o "formatDate.js".
+
+¿Qué nombre podrían tener los archivos que hay en la carpeta services?
+
+Los archivos que se encuentran en la carpeta services podrían tener nombres como "calculateTotalPrice.js" o "sendEmail.js".
+
+¿En qué carpeta se encontraría un archivo que hiciera el tratamiento de las imagenes como por ejemplo su redimensionado?
+
+En la carpeta utils.
+
+¿Por qué no meter ese archivo en la carpeta services?
+
+No se metería en la carpeta services porque el tratamiento de las imágenes no es una tarea que se realiza de forma frecuente y por lo tanto no se considera un "service".
+
+¿Qué habría en carpeta seeders?
+
+En la carpeta seeders habría archivos que contienen datos de ejemplo que se pueden usar para inicializar la base de datos de la aplicación.
+
+¿Qué habría en la carpeta routes?
+
+En la carpeta routes habría archivos que contienen las rutas de la API.
+
+¿Qué librería se encarga de manejar las routes?
+
+Express.
+
+¿Qué librería se encargaría de los seeders?
+
+Sequelize-auto.
+
+¿Qué librería se encargaría de los services?
+
+Ninguna en particular, ya que los services son un concepto más general y no están relacionados con una librería en particular.
+
+¿Que habría en la carpeta de models?
+
+En la carpeta de models habría archivos que contienen los modelos de la aplicación.
+
+¿Qué es un modelo?
+
+Un modelo es una representación de los datos que se almacenarán en la base de datos de la aplicación.
+
+¿Qué habrá en la carpeta de migrations?
+
+En la carpeta de migrations habría archivos que contienen las migraciones de la aplicación.
+
+¿Qué es una migración?
+
+Una migración es un cambio en la estructura de la base de datos de la aplicación. Por ejemplo, si se agrega un nuevo campo a un modelo, se necesitará crear una nueva migración para reflejar ese cambio en la base de datos.
+
+¿Quién se encarga de gestionar las migraciones?
+
+Sequelize.
+
+¿Qué habrá en la carpeta middlewares?
+
+En la carpeta middlewares habría archivos que contienen código que se ejecuta antes o después de que se procesa una solicitud de la API. Por ejemplo, un middleware podría verificar si un usuario está autenticado antes de permitirle acceder a ciertos recursos de la API.
+
+Dame un ejemplo de middleware que compruebe si el usuario dispone de un token
+
+Este middleware comprueba si el usuario dispone de un token válido en la solicitud. Si no dispone de un token válido, el middleware devolverá un error.
+
+    function checkToken(req, res, next) {
+    const token = req.headers['x-access-token'] || req.body.token || req.query.token
+
+    if (!token) {
+        res.status(401).json({
+            message: 'No token provided.'
+        })
+    } else {
+        jwt.verify(token, process.env.SECRET, (err, decoded) => {
+            if (err) {
+                res.status(401).json({
+                    message: 'Invalid token.'
+                })
+            } else {
+                req.decoded = decoded
+                next()
+            }
+        })
+    }
+}
+
+¿Que habrá en la carpeta controllers?
+
+En la carpeta controllers habría archivos que contienen los controladores de la aplicación.
+
+¿Qué es un controlador?
+
+Un controlador es una clase que contiene métodos que se encargan de procesar las solicitudes de la API.
+
+¿Qué librería se encarga de gestionar los middlewares?
+
+Ninguna en particular, ya que los middlewares son un concepto más general y no están relacionados con una librería en particular.
+
+¿Qué librería se encarga de gestionar los controladores?
+
+Ninguna en particular, ya que los controladores son un concepto más general y no están relacionados con una librería en particular.
+
+¿Qué librería se encarga de gestionar los modelos?
+
+Sequelize.
+
+¿Qué diferencia hay entre un controlador y un middleware?
+
+Un controlador se encarga de procesar las solicitudes de la API, mientras que un middleware se ejecuta antes o después de que se procesa una solicitud de la API.
+
+Dame un ejemplo donde un controlador y un middleware actúen juntos
+
+El controlador puede recibir la solicitud de la API y llamar a un middleware para verificar si el usuario está autenticado. Si el usuario no está autenticado, el middleware devolverá un error y el controlador no procesará la solicitud.
+
+Enséñamelo con código:
+
+    function checkAuthenticated(req, res, next) {
+    if (!req.user) {
+        res.status(401).json({
+            message: 'No autorizado'
+        })
+    } else {
+        next()
+    }
+}
+
+function getUser(req, res) {
+    User.findById(req.params.id, (err, user) => {
+        if (err) {
+            res.status(500).json({
+                message: 'Error al obtener el usuario'
+            })
+        } else {
+            res.json(user)
+        }
+    })
+}
+
+router.get('/user/:id', checkAuthenticated, getUser)
+
+¿Qué habría en la carpeta configs si existiera?
+
+En la carpeta configs habría archivos que contienen la configuración de la aplicación. Por ejemplo, un archivo de configuración podría especificar la base de datos que se va a utilizar, el puerto en el que se va a ejecutar la aplicación, etc.
+
+
+¿Cómo sería el archivo package.json si el proyecto se llamara tpv? Incluye el npm start y el dev, además de las librerías necesarias del proyecto web basado en la arquitectura rest api basado en react, express, sequelize y sequelize-auto
+
+{
+  "name": "tpv-api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "mysql2": "^2.3.3",
+    "openai": "^3.0.1",
+    "sequelize": "^6.25.5",
+    "sequile-auto": "^0.8.8"
+  },
+  "devDependencies": {
+    "sequelize-cli": "^6.5.2"
+  }
+}
+
+¿Qué es package.json?
+
+Package.json es un archivo que contiene información sobre el proyecto, como su nombre, versión, dependencias, scripts, etc.
+
+¿Qué significa main en package.json?
+
+Main especifica el archivo principal de la aplicación, que se ejecutará cuando se ejecute el comando "npm start".
+
+¿Qué signifa dev en package.json?
+
+Dev especifica el comando que se debe ejecutar para iniciar la aplicación en modo de desarrollo, cuando se ejecute el comando "npm run dev".
+
+¿Qué significa nodemon?
+
+Nodemon es una herramienta que se ejecuta en segundo plano y que se encarga de reiniciar la aplicación cada vez que se guardan cambios en los archivos.
+
+¿Qué hace librería cors?
+
+La librería CORS se encarga de permitir que las solicitudes de la API se puedan realizar desde otro dominio, lo que se conoce como "solicitudes entre dominios".
+
+¿Qué hace la librería dotenv?
+
+La librería dotenv se encarga de leer archivos ".env" y cargar las variables de entorno especificadas en ellos.
+
+¿Qué hace la librería express?
+
+La librería Express se encarga de simplificar la creación de aplicaciones web y APIs.
+
+¿Qué hace la librería mysql2?
+
+La librería mysql2 se encarga de proporcionar una interfaz para trabajar con la base de datos MySQL.
+
+¿Qué hace la librería openai?
+
+La librería openai se encarga de proporcionar acceso a la API de OpenAI.
+
+¿Qué hace la librería sequelize?
+
+La librería Sequelize se encarga de simplificar el trabajo con bases de datos relacionales, como MySQL, PostgreSQL, etc.
+
+¿Qué es un ORM?
+
+ORM es el acrónimo de "Object Relational Mapping" que se traduce como "Mapeo Objeto Relacional". Se trata de una técnica que permite tratar a los datos almacenados en una base de datos relacional como si fueran objetos.
+
+¿Qué hace la librería sequelize-cli?
+
+La librería sequelize-cli se encarga de proporcionar una interfaz de línea de comandos para trabajar con Sequelize.
+
+Cómo se crea una migración con sequelize-cli:
+
+Cuando empezamos nuestro proyecto:
+
+1. Ejecuta el comando dentro de la carpeta /src "npx sequelize init" para inicializar un proyecto Sequelize. Esto creará las carpetas config, models, migrations y seeders
+
+A partir de entonces lanzamos estos comandos cada vez que queramos crear y lanzar una migración, estos comandos se lanzarán dentro de la carpeta que contenga la carpeta
+migrations:
+
+2. Ejecuta el comando dentro de la carpeta /src "npx sequelize migration:generate --name=nombre-migracion" para crear una nueva migración.
+3. Ejecuta el comando  dentro de la carpeta /src "npx sequelize db:migrate" para aplicar las migraciones.
+
+Cómo se vuelve atrás una migración:
+
+npx sequelize-cli db:migrate:undo  Echar atrás las últimas migraciones lanzadas
+
+npx sequelize-cli db:migrate:undo:all --to XXXXXXXXXXXXXX-create-posts.js Echar atrás las migraciones hasta una migración concreta, donde 
+XXXXXXXXXXXXXX-create-posts.js es el nombre del archivo de la migración 
+
+¿Cómo funciona un archivo de migración? ¿Qué escribimos dentro?
+
+1º Tenemos que escribir el nombre de la tabla que vamos a crear
+
+queryInterface.createTable('nombre_de_la_tabla',
+
+Los nombres estarán en minúscula, en plural, en ingles y si fuera un nombre compuesto separamos con barra
+baja _ y la primera palabra tiene que ser en singular
+
+2º Dentro de las llaves declararemos como clave los nombres de los campos que queremos que tenga la tabla.
+
+3º Dentro de las llaves de cada campo definimos el tipo de dato:
+
+https://sequelize.org/docs/v6/core-concepts/model-basics/#data-types
+
+y sus cualidades (allowNull, autoIncrement, etc.) 
+
+https://sequelize.org/api/v7/interfaces/modelattributecolumnoptions
+
+¿Qué debemos hacer para generar los modelos? ¿Cómo se utiliza sequelize-auto?
+
+Lanzamos este comando dentro de la carpeta donde se encuentra la carpeta models
+
+npx sequelize-auto -h 127.0.0.1 -d tpv -u root -x password -p 3306 -e mysql --indentation 4 -T sequelizemeta --cm p --cf k --sg
+
+¿Qué es nodemon?
+
+Nodemon es una herramienta que se utiliza para desarrollo que se encarga de reiniciar automáticamente el servidor cada vez que se guardan cambios en los archivos.
+
+¿En qué orden va a arrancar el servidor?
+
+Dentro de la carpeta /api encontraremos un archivo llamado index.js que arrancará el proyecto. A su ver en el archivo 
+package.json hemos declarado las dos siguientes líneas
+
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js"
+  }
+
+Donde la primera se arrancará cuando escribamos en la consola "npm start" y la segunda cuando escribamos
+"npm run dev". La primera arrancará el servidor y la segunda hará lo mismo, pero cada vez que guardemos
+un archivo reiniciará el servidor. 
+
+Por tanto, al arrancar el servidor lo primero que se lanzará es el archivo index.js, dentro de este 
+
+1º) Se cargará el archivo index.js que se encuentra dentro de la carpeta models.
+
+const db = require("./src/models");
+
+Ya que si haces un require de una carpeta, lo que se buscará dentro de ella es el archivo index.js si existiera.
+
+El archivo index.js de la carpeta models está cargando el ORM Sequelize, que a su vez carga la conexión a
+la base de datos y llama al archivo initModels que carga los modelos.  
+
+2º) Se cargará los archivos que se encuentran en la carpeta /routes y se enviarán a la librería Express que es 
+la encargada de gestionar las rutas
+
+var routePath="./src/routes/";
+
+fs.readdirSync(routePath).forEach(function(file) {
+    require(routePath + file)(app);
+});
+
+Por tanto, en la constante "db" tendremos todos los modelos cargados, la librería Sequelize y la conexión a la base de datos. Y en
+la constante app tendremos express, con todas las rutas cargadas y escuchando el puerto asignado. 
+
+¿Cuando arrancará un controlador?
+
+Como la librería Express se encuentra escuchando un puerto, cuando llegue un petición HTTP a través de él, 
+Express comprobará si existe una ruta declarada que coincida con la url (endpoint) utilizada. Si es así es
+entonces cuando arrancará una función concreta de un controlador. 
+
+Por tanto, la secuencia de una llamada será la siguiente
+
+Cliente (fetch) -> router -> controlador -> modelo -> tabla -> modelo -> controlador -> cliente (respuesta fetch)
+
+¿Qué datos podemos capturar de una llamada http dentro del controlador?
+
+A través de la variable "req" (request), podemos capturar:
+
+req.body -> Que son los datos enviados a través del atributo body en una llamada post o put (por ejemplo acceder al dato "type" que ha venido con el body se capturaría con req.body.type)
+
+req.query -> Que son los datos enviados a través de una url en una llamada get (por ejemplo www.cualquiercosa.com?nombre=carlos se capturaría con req.query.nombre), utilizadas generalmente cuando filtramos datos de una consulta 
+
+req.params -> Que son los datos enviados a través de una url en una llamada get, put o delete, donde hemos identificado partes de la url para posteriormente capturarlas (www.cualquiercosa.com/:categoria donde estamos 
+identificando el primer parámetro de la url con la palabra "categoría" y podremos capturar lo que escriba el usuario ahí mediante req.params.categoria )
+ 
+req.headers -> Que son los datos enviados a través de las cabeceras de la llamada http (por ejemplo capturar el token que nos envía el usuario req.headers["x-access-token"])
+
+Tenemos que devolver siempre un código de respuesta a cada petición ¿Qué códigos de respuesta podemos devolver al usuario?
+
+Los códigos de respuesta HTTP sirven para indicar el resultado de una solicitud realizada por un cliente a un servidor web. 
+Estos códigos se clasifican en cinco categorías; información (1xx), éxito (2xx), redirección (3xx), error del cliente (4xx) y error del servidor (5xx).
+
+https://developer.mozilla.org/en-US/docs/Web/HTTP/Status
+
+Los principales que empiezan por 100 son:
+
+100 Continue: La solicitud fue recibida y el cliente debe continuar con la petición.
+102 Processing: El servidor está procesando la petición.
+
+Los principales que comienzan por 200 son:
+
+200 OK: La solicitud fue recibida, aceptada y procesada correctamente
+201 Created: La solicitud fue completada y un nuevo recurso fue creado.
+202 Accepted: La solicitud fue recibida pero se está procesando en segundo plano.
+203 Cache:La solicitud fue recibida, aceptada y procesada correctamente, pero el recurso enviado proviene de una cache.
+205 Reset: La solicitud fue completada y un nuevo recurso fue cread y vamos a resetear el formulario que ha enviado los datos.
+
+Los principales que empiezan por 300 son:
+
+300 Mices: La solicitud fue recibida y hay varias opciones para completarla.
+301 Moved Permanently: La solicitud fue recibida y el recurso se ha movido permanentemente a otro lugar.
+302 Found: La solicitud fue recibida pero el recurso se encuentra temporalmente en otra ubicación.
+307 Temporaly Redirect: La solicitud fue recibida pero el recurso se encuentra temporalmente en otra ubicación, pero mantiene el método HTTP utilizado en la petición original.
+308 Permanently Redirect: La solicitud fue recibida pero el recurso se encuentra permanentemente en otra ubicación, pero mantiene el método HTTP utilizado en la petición original.
+
+Los principales que comienzan por 400 son:
+
+400 Bad Request: La solicitud fue recibida pero contiene un error.
+401 Unauthorized: La solicitud fue recibida pero el usuario no tiene autorización para acceder al recurso.
+402 Payment Required: La solicitud fue recibida pero se requiere un pago para acceder al recurso.
+403 Forbidden: La solicitud fue recibida pero el usuario no tiene permiso para acceder al recurso.
+404 Not Found: La solicitud fue recibida pero el recurso solicitado no existe.
+410 Gone: Esta respuesta puede ser enviada cuando el contenido solicitado ha sido borrado del servidor.
+422 Unprocessable Entity: La petición estaba bien formada pero no se pudo seguir debido a errores de semántica (por ejemplo si no pasa el validador)
+429 Too Many Requests: El usuario ha enviado demasiadas solicitudes en un periodo de tiempo dado.
+
+Los principales que empiezan por 500 son:
+
+500 Internal Server Error: La solicitud fue recibida pero e servidor encontró un error al procesarla.
+501 Not Implemented: La solicitud fue recibida pero el servidor no soporta la acción solicitada (no está declarado el método http de la url solicitada en el enrutador).
+502 Bad Gateway: La solicitud fue recibida pero el servidor encontró un error al comunicarse con otro servidor.
+503 Service Unavailable: La solicitud fue recibida pero el servidor no está disponible para procesarla.
+504 Gateway Timeout: La solicitud fue recibida pero el servidor no pudo obtener una respuesta del servidor remoto.
+
+
+Consultas básicas de Sequelize
+
+https://sequelize.org/docs/v6/core-concepts/model-querying-basics/

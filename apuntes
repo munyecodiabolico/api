@@ -1,0 +1,249 @@
+instalar node.js
+
+crar proyecto en github
+
+creo una carpeta en el disco duro donde descargaremos el proyecto nuevo
+
+git push (con la direccion que nos da el nuevo repositorio en github) en visual para descargar el nuevo proyecto
+
+inicializamos el proyecto con: npm init
+
+Abrimos el package.json
+
+Lanzamos el package.json con npm install
+
+Cuando arrancas el proyecto usando sequelize se lanza
+-----------------------------------------------------
+npm instala las librerias en tu proyecto o en tu maquina
+npx ejecuta las librerias de npm sin instalarlas.
+npx sequelize init
+--> Esto nos genera las carpetas /config, /models/, /migrations y /seeders, y genera un archivo index.js en /models y un config.json en /config
+
+Insertas los archivos index.js en api y otro index.js en models
+Los ficheros los tenemos en classroom
+
+Creamos archivo .gitignore, donde ponemos todas las carpetas y archivos que no queremos subir a github
+
+Terminamos de configurar el config.json
+
+Creamos el archivo .env con los datos que hay en classroom y cambiando nuestra base de datos
+
+Creamos las migraciones
+
+Introducimos en el archivo creado los datos que encontraremos para la migracion de taxes en classroom
+
+Lanzamos la migracion
+
+Lanzamos sequelize-auto
+
+Preparamos los controladores
+
+Nos quedan las rutas
+
+
+
+
+
+
+
+
+
+PROCESO DE MIGRACION COMPLETO
+=============================
+
+
+1º Migracion
+------------
+a) - npx sequelize migration:generate --name=nombretablaamigrar debe ser descriptiva de lo que haces (guiones normales)
+b) - Copia y pega el contenido de otra migracion y cambia los datos
+c) - npx sequelize db:migrate
+
+
+2º Modelo
+---------
+a) - npx sequelize-auto -h 127.0.0.1 -d nombre_de_tu_base_de_datos -u root -x password -p 3306 -e mysql --indentation 4 -T sequelizemeta --cm p --cf k --sg
+
+
+3º Controlador
+--------------
+a) Copia y pega un controlador que ya tengas y modificalo
+
+
+4º Rutas
+--------
+a) - Copia y pega una ruta existente y modifica
+
+
+
+
+
+
+
+
+
+
+CONEXIONES CON EL SERVIDOR
+==========================
+
+
+CLIENTE -> ROUTES -> CONTROLADOR -> MODELO -> BBDD
+
+
+Migraciones:
+------------
+Historial de cambios de estructura de la base de datos.
+
+
+Seeders:
+--------
+Archivos que sirven para meter datos dentro de una tabla de la base de datos.
+
+
+Middlewares:
+------------
+Cuando un cliente hace una llamada y se quiere hacer una accion antes o despues de la llamada. Por ejemplo, antes de hacer la llamada le pedimos si tiene token.
+
+
+Services:
+---------
+Codigo que no pertenece a nadie. A ningun controlador en concreto.
+Codigo utilizado por varias partes de la aplicacion, separado porque lo van a utilizar lass diferentes secciones.
+Ej. Redimensionamiento de imagenes. Muchas secciones de la web lo usan.
+
+
+Utils:
+------
+Lo mismo que services pero pequeños trozos de codigo llamado por diferentes archivos de la aplicacion.
+Ej. Pasar a mayusculas.
+
+
+Tests:
+------
+Ficheros de prueba para testear la applicacion o web.
+Ej. Comprobar que el proceso de añadir un producto funciona correctamente.
+
+
+package.json:
+-------------
+Archivo con todas las dependencias de paquetes javascript que tiene la aplicacion.
+Para instalar todo lo que hay dentro tan solo hay que hacer: npm install desde la carpeta donde esta ese archivo.
+Si queremos añadir alguna libreria nueva hay que hacer: npm nombre de la libreria.
+Si añadimos una libreria, package.json se actualiza automaticamente.
+
+
+dependencias
+------------
+bcriptjs        ->  encriptacion de contraseñas
+cors            ->  comunicacion entre dos maquinas que estan en diferentes dominios. Comunicacion entre cliente y servidor.
+dotenv          ->  Para tener un archivo .env. Es un archivo que contiene variables de entorno. Este archivo se pone en .gitignore
+express         ->  Gestiona los endpoints (urls que estan declaradas en el enrutador)
+jsonwebtoken    ->  Control de los tokens
+msql2           ->  Establecimiento de comunicacion con mysql
+openai          ->  Inteligencia artifical
+sequelize       ->  ORM (Simplifica el codigo mysql y te lo da en formato js)
+sequelize-auto  ->  Genera el modelo automaticamente en base a las migraciones que tenemos.
+
+
+devDependencias
+---------------
+nodemon         ->  monitoriza y reinicia el servidor node cuando cambian los ficheros que vigila (archivos js)
+sequelize-cli   ->  Poder lanzar los comandos de sequelize en consola.
+
+
+npm te permite instalar de tres maneras:
+----------------------------------------
+npm install -g nombre dependencia   ----> modo global
+npm install -save-dev nombre dep    ----> como dependencia de desarrollo
+npm install nombre                  ----> normal
+
+npm install --production            ----> Se instalaran solo las dependencias normales (produccion)
+
+
+Cuando arrancas el proyecto usando sequelize se lanza
+-----------------------------------------------------
+npm instala las librerias en tu proyecto o en tu maquina
+npx ejecuta las librerias de npm sin instalarlas.
+npx sequelize init
+--> Esto nos genera las carpetas /config, /models/, /migrations y /seeders, y genera un archivo index.js en /models y un config.json en /config
+
+
+Para crear el archivo de migracion de cada tabla se hace de la siguiente manera:
+--------------------------------------------------------------------------------
+npx sequelize migration:generate --name=nombretablaamigrar
+Ej: npx sequelize migration:generate --name=taxes
+
+
+Para ejecutar el archivo de migracion:
+--------------------------------------
+npx sequelize db:migrate
+Se genera una tabla extra (sequelizemeta).
+Si hemos empezado la ejecucion de las migraciones y nos damos cuenta de que falta algo en alguna tabla, borramos la tabla en concreto, y vamos a la tabla sequelizemeta
+y eliminamos el registro de la tabla a la que corresponde el campo porque al haber hecho la migracion, no se ejecutaria la migracion dos veces igual.
+
+
+Volver atras una migracion:
+---------------------------
+
+Para lanzar las migraciones:
+npx sequelize db:migrate
+
+Echar atrás las últimas migraciones lanzadas:
+npx sequelize-cli db:migrate:undo
+
+
+O echar atrás las migraciones hasta una migración concreta:
+npx sequelize-cli db:migrate:undo:all --to XXXXXXXXXXXXXX-create-posts.js
+
+Donde XXXXXXXXXXXXXX-create-posts.js es el nombre del archivo de la migración
+
+
+Crear los modelos:
+A partir de las tablas que hay en la DB se generan los modelos con sequelize-auto
+
+npx sequelize-auto -h 127.0.0.1 -d nombre_base_datos -u root -x password -p 3306 -e mysql --indentation 4 -T sequelizemeta --cm p --cf k --sg
+
+-h --> IP
+-d --> base dedatos
+-u --> user
+-x --> password
+-p --> puerto
+-e --> tipo de base de datos
+--indentation --> identacion de nro de espacios al crear el modelo
+-T --> ignora una tabla en concreto
+--cm --> formato del nombre del archivo (p es Pascalcase. NombreDelModelo).
+--cf --> nombre del archivo (k kebabcase, nombre-del-archivo)
+--sg --> pasa el nombre de la tabla a singular
+
+
+Sequelize
+---------
+
+En index.js 
+
+const Sequelize = require('sequelize'); --> Requerimos la libreria sequelize
+
+const db = {}; --> Creamos un objeto vacio
+
+sequelize = new Sequelize(config.database, config.username, config.password, config); --> Instanciamos una nueva conexion a la BBDD
+
+.forEach(file => {
+const model = require(path.join(__dirname, file))(sequelize, Sequelize.DataTypes);
+db[model.name] = model;
+});
+--> En la variable db introducimos todos los modelos que existen
+
+db.sequelize = sequelize; --> Ponemos dentro de db un campo con la conexion a la base de datos
+db.Sequelize = Sequelize; --> Ponemos dentro de db un campo con los datos de llamada a la libreria sequelize;
+
+
+En el controller tax-controller.js:
+-----------------------------------
+
+const db = require("../../models"); --> Requerimos en db todos los modelos
+const Tax = db.Tax; --> Metemos en Tax el contenido de la clave Tax de db que es el modelo de tax
+
+
+
+POSTMAN
+-------
+
