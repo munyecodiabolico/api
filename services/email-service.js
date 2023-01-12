@@ -76,7 +76,27 @@ module.exports = class EmailService {
             if (err) {
                 console.log(err);
             } else {
-               // Aquí podríamos registrar en una base de datos los correos enviados
+
+
+
+
+                const db = require("../../models");
+                const Contact = db.Contact;
+    
+                exports.create = (req, res) => {
+                    Contact.create(req.body).then(data => {
+                        res.status(200).send(data);
+                    }).catch(err => {
+                        res.status(500).send({
+                            message: err.message || "Algún error ha surgido al insertar el dato."
+                        });
+                    });
+                };
+                
+
+
+
+                
             }
         });
     }
