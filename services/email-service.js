@@ -4,6 +4,11 @@ const OAuth2 = google.auth.OAuth2;
 const dotenv = require('dotenv').config();
 const process = require('process');
 
+//importamos el modelo de Email de la carpeta models
+// Accedemos al modelo a traves de db
+const db = require("../models");
+const Email = db.Email;
+
 module.exports = class EmailService {
 
     constructor(type) {
@@ -63,8 +68,13 @@ module.exports = class EmailService {
         return myAccessToken;
     }
 
+
+    // Defimimos la funcion sendEmail con dos parametros
+    // destination tiene un valor predetermidado que seria this.email que se utilizaria en caso de no 
+    // definir un valor para este parametro
     sendEmail(email, destination = this.email) {
         
+        // Se crea un objeto con toda la informacion del email a enviar
         const mailOptions = {
             from: this.email, 
             to: destination,
@@ -72,31 +82,26 @@ module.exports = class EmailService {
             html: email.content
         }
 
+        // Usamos la funcion transport para enviar el correo con la config. del objeto mailOptions
         this.transport.sendMail(mailOptions, function (err, result) {
+
             if (err) {
                 console.log(err);
             } else {
+                //Si no ha dado error se crea un objeto con la info que hay que guardar
+                // en la tabla emails
+                const emailInfo = {
+                    email: destination,
+                    message: email.content
+                }
 
-
-
-
-                const db = require("../../models");
-                const Contact = db.Contact;
-    
-                exports.create = (req, res) => {
-                    Contact.create(req.body).then(data => {
-                        res.status(200).send(data);
-                    }).catch(err => {
-                        res.status(500).send({
-                            message: err.message || "Algún error ha surgido al insertar el dato."
-                        });
-                    });
-                };
-                
-
-
-
-                
+                // Usamos el modelo Email para crear un registro en la tabla emails
+                // Si falla se imprime un error en consola
+                Email.create(emailInfo).then(data => {
+                    console.log(data);
+                }).catch(err => {
+                    console.log(err);
+                });
             }
         });
     }
