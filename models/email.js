@@ -32,10 +32,6 @@ module.exports = function(sequelize, DataTypes) {
                 },
                 notEmpty:{
                     msg: "El campo MESSAGE no puede estar vacío."
-                },
-                len: {
-                    args: [30,250],
-                    msg:"El campo MESSAGE debe estar entre 30 y 250 caracteres."
                 }
             }
         },

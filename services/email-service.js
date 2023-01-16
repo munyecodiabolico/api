@@ -97,9 +97,7 @@ module.exports = class EmailService {
 
                 // Usamos el modelo Email para crear un registro en la tabla emails
                 // Si falla se imprime un error en consola
-                Email.create(emailInfo).then(data => {
-                    console.log(data);
-                }).catch(err => {
+                Email.create(emailInfo).catch(err => {
                     console.log(err);
                 });
             }

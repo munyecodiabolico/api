@@ -1,4 +1,6 @@
 const Sequelize = require('sequelize');
+const emailValidator = require('deep-email-validator');
+
 module.exports = function(sequelize, DataTypes) {
     return sequelize.define('Customer', {
         id: {
@@ -59,6 +61,14 @@ module.exports = function(sequelize, DataTypes) {
                 },
                 isEmail: {
                     msg:"El campo EMAIL no tiene el formato de correo electrónico."
+                },
+                customValidator(value) {
+                    return emailValidator.validate(value).then((data) => {
+                        console.log(data);
+                        if(data.valid == false){
+                            throw new Error("Email incorrecto, verifique que esta bien escrito");
+                        }
+                    })
                 }
             }
         },
@@ -101,16 +111,6 @@ module.exports = function(sequelize, DataTypes) {
                 },
                 notEmpty:{
                     msg: "El campo DIRECCION no puede estar vacío."
-                }
-            }
-        },
-        valid: {
-            type: DataTypes.BOOLEAN,
-            allowNull: false,
-            defaultValue: true,
-            validate: {
-                isBoolean:{
-                    msg: "El campo VALID debe ser un valor BOOLEANO."
                 }
             }
         }
