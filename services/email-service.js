@@ -1,3 +1,12 @@
+// Este código es un servicio de correo electrónico que permite enviar correos electrónicos a través de un protocolo SMTP o mediante la API de Gmail. Utiliza la biblioteca NodeMailer para manejar la conexión con el servidor de correo electrónico y la biblioteca googleapis para manejar la autenticación con la API de Gmail. También utiliza la biblioteca dotenv para acceder a las variables de entorno y la biblioteca process para acceder a las variables de proceso. En este servicio se define un constructor que toma un tipo (SMTP o Gmail) y configura un transporte de correo electrónico en consecuencia. También define una función para enviar correos electrónicos y guardar los detalles del correo enviado en una tabla de base de datos.
+// Además, el servicio define una función getAccessToken() que se utiliza para obtener un token de acceso actualizado a la API de Gmail utilizando una instancia de la clase OAuth2 de Google. Utiliza las variables de entorno especificadas en el archivo .env para configurar la conexión con la API de Gmail.
+
+// La función sendEmail() recibe dos parámetros, el objeto de correo electrónico y el destinatario (que tiene un valor predeterminado de this.email si no se especifica un destinatario). Utiliza las opciones de correo electrónico especificadas en el objeto mailOptions para enviar el correo electrónico a través del transporte configurado en el constructor. Si el correo electrónico se envía con éxito, se guarda la información en una tabla de base de datos. Si hay un error al enviar el correo electrónico, se imprime un mensaje de error en la consola.
+
+
+
+
+
 const nodemailer = require('nodemailer');
 const { google } = require("googleapis");
 const OAuth2 = google.auth.OAuth2;
@@ -13,9 +22,9 @@ module.exports = class EmailService {
 
     constructor(type) {
 
-        if(type === 'smtp') {
+        if (type === 'smtp') {
 
-            this.email = process.env.EMAIL; 
+            this.email = process.env.EMAIL;
 
             this.transport = nodemailer.createTransport({
                 pool: true,
@@ -27,15 +36,15 @@ module.exports = class EmailService {
                     pass: process.env.EMAIL_PASSWORD,
                 },
                 tls: {
-                    ciphers:'SSLv3'
+                    ciphers: 'SSLv3'
                 }
             });
 
-        } 
-        
-        else if(type === 'gmail') {
+        }
 
-            this.email = process.env.GOOGLE_EMAIL; 
+        else if (type === 'gmail') {
+
+            this.email = process.env.GOOGLE_EMAIL;
 
             this.transport = nodemailer.createTransport({
                 service: "gmail",
@@ -73,10 +82,10 @@ module.exports = class EmailService {
     // destination tiene un valor predetermidado que seria this.email que se utilizaria en caso de no 
     // definir un valor para este parametro
     sendEmail(email, destination = this.email) {
-        
+
         // Se crea un objeto con toda la informacion del email a enviar
         const mailOptions = {
-            from: this.email, 
+            from: this.email,
             to: destination,
             subject: email.subject,
             html: email.content

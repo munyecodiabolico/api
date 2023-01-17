@@ -1,0 +1,14 @@
+Este código es un archivo JSON que contiene configuraciones para una base de datos. El archivo tiene tres objetos "development", "test" y "production" que representan los diferentes entornos de configuración para una aplicación.
+
+El objeto "development" tiene las siguientes propiedades:
+
+"username": es el nombre de usuario para conectarse a la base de datos.
+"password": es la contraseña para conectarse a la base de datos.
+"database": es el nombre de la base de datos que se utilizará.
+"host": es la dirección IP o el nombre de host del servidor de base de datos.
+"dialect": es el tipo de base de datos que se utilizará, en este caso es "mysql".
+El objeto "test" tiene las mismas propiedades que el objeto "development", pero con valores diferentes.
+
+El objeto "production" tiene las mismas propiedades que el objeto "development" y "test", pero con valores diferentes.
+
+En este archivo se puede ver como cambian los valores de configuración según el entorno en el que se esté trabajando, es decir, el usuario, password, nombre de la base de datos, host y dialect son diferentes para desarrollo, test y producción.
