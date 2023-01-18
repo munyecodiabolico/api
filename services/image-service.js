@@ -93,7 +93,7 @@ module.exports = class ImageService {
                                 // Convierte la imagen a formato webp
                                 .toFormat(item.extensionConversion)
                                 // Guarda la imagen redimensionada en el directorio "thumbnail" de la ruta de destino
-                                .toFile(path.join(__dirname, `../storage/images/${this.entity}/${this.entityId}/${image.fieldname}/${item.grid}/${path.parse(image.filename).name}.webp`)) 
+                                .toFile(path.join(__dirname, `../storage/images/${this.entity}/${this.entityId}/${image.fieldname}/${item.grid}/${path.parse(image.filename).name}.${item.extensionConversion}`)) 
                                 // Si la redimensionada y conversión se realizó correctamente
                                 .then(resizedImage  => { // el campo resizedImage es el contenedor de la informacion pero puede ser lo que uno quiera
     
@@ -103,13 +103,13 @@ module.exports = class ImageService {
                                             imageConfigurationsId: item.id,
                                             titleText: "Hola",
                                             altText: "Hola",
-                                            path: `/storage/images/${this.entity}/${this.entityId}/${image.fieldname}/${item.grid}/${path.parse(image.filename).name}.webp`,
+                                            path: `/storage/images/${this.entity}/${this.entityId}/${image.fieldname}/${item.grid}/${path.parse(image.filename).name}.${item.extensionConversion}`,
                                             entity: this.entity,
                                             entityKey : this.entityId,
                                             languageAlias: "es",
                                             filename: image.originalname,
                                             content: image.fieldname,
-                                            mimeType: image.mimetype,
+                                            mimeType: `image/${item.extensionConversion}`,
                                             grid: item.grid,
                                             sizeBytes: resizedImage.size,
                                             widthPx: resizedImage.width,
