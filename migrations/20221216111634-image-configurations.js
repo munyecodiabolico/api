@@ -15,29 +15,13 @@ module.exports = {
         allowNull: false,
         type: Sequelize.STRING
       },
-      directory: {
+      name: {
         allowNull: false,
         type: Sequelize.STRING
       },
-      type: {
+      mediaQuery: {
         allowNull: false,
         type: Sequelize.STRING
-      },
-      content: {
-        allowNull: false,
-        type: Sequelize.STRING
-      },
-      grid: {
-        allowNull: false,
-        type: Sequelize.STRING
-      },
-      contentAccepted: {
-        allowNull: false,
-        type: Sequelize.STRING
-      },
-      extensionConversion: {
-        allowNull: false,
-        type: Sequelize.STRING(4)
       },
       widthPx: {
         allowNull: false,

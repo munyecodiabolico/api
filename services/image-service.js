@@ -34,7 +34,7 @@ module.exports = class ImageService {
                 // Establece una variable "newDir" con el directorio de la ruta de destino
                 let newDir = path.dirname(newPath);
 
-                // Crea el directorio especificado en "newDir" utilizando el módulo 'fs', con la opción "recursive" que permite crear todos los directorios necesarios de manera recursiva. Si ocurre algún error, se ejecuta la función de callback con el parámetro "err"
+                // Crea el directorio especificado en "newDir" utilizando el módulo 'fs', con la opción "recursive" que permite crear todos los directorios necesarios de manera recursiva, o sea si no existe la carpeta la crea, en caso contrario usa la que hay. Si ocurre algún error, se ejecuta la función de callback con el parámetro "err"
                 fs.mkdir(newDir, { recursive: true }, (err) => {
                     // Si se produjo un error en la creación del directorio, se lanza una excepción
                     if (err) throw err;
@@ -44,7 +44,7 @@ module.exports = class ImageService {
                         if (err) throw err;
                     });
 
-                    // usamos sharp para obtener el width y el height de la imagen y luego ya podemos crear el registro
+                    // usamos la libreria sharp de tratamiento de imagen para obtener el width y el height de la imagen y luego ya podemos crear el registro
                     sharp(newPath)
                     .metadata()
                     .then(metadata => {
@@ -61,7 +61,7 @@ module.exports = class ImageService {
                                widthPx: metadata.width,
                                heightPx: metadata.height
                             });
-
+                            // El return nos devuelve los datos grabados en la base de datos
                     }).then (sourceImage => {
                         // Verifica si el directorio "thumbnail" no existe en la ruta de destino
                         if (!fs.existsSync(path.join(__dirname,  `../storage/images/${this.entity}/${this.entityId}/${image.fieldname}/thumbnail`))){
