@@ -20,4 +20,3 @@ module.exports = (app, upload) => {
 
   app.use('/api/admin/users', router);
 };
-  
