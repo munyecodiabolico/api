@@ -63,6 +63,7 @@ c) - npx sequelize db:migrate
 ---------
 a) - npx sequelize-auto -h 127.0.0.1 -d nombre_de_tu_base_de_datos -u root -x password -p 3306 -e mysql --indentation 4 -T sequelizemeta --cm p --cf k --sg
 
+Este paso solo se hace la primera vez cuando el proyecto esta vacio. Si se tiene que añadir una tabla nueva solamente es un paso que se salta.
 
 3º Controlador
 --------------

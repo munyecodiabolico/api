@@ -16,12 +16,12 @@
 
 
 const db = require("../../models");
-const Business = db.Business;
+const Book = db.Book;
 const Op = db.Sequelize.Op;
 
 exports.create = (req, res) => {
 
-    Business.create(req.body).then(data => {
+    Book.create(req.body).then(data => {
         res.status(200).send(data);
     }).catch(err => {
         res.status(500).send({
@@ -46,7 +46,7 @@ exports.findAll = (req, res) => {
 
     let condition = Object.keys(whereStatement).length > 0 ? {[Op.and]: [whereStatement]} : {};
 
-    Business.findAndCountAll({
+    Book.findAndCountAll({
         where: condition, 
         limit: limit,
         offset: offset,
@@ -73,7 +73,7 @@ exports.findOne = (req, res) => {
 
     const id = req.params.id;
 
-    Business.findByPk(id).then(data => {
+    Book.findByPk(id).then(data => {
 
         if (data) {
             res.status(200).send(data);
@@ -94,7 +94,7 @@ exports.update = (req, res) => {
 
     const id = req.params.id;
 
-    Business.update(req.body, {
+    Book.update(req.body, {
         where: { id: id }
     }).then(num => {
         if (num == 1) {
@@ -117,7 +117,7 @@ exports.delete = (req, res) => {
 
     const id = req.params.id;
 
-    Business.destroy({
+    Book.destroy({
         where: { id: id }
     }).then(num => {
         if (num == 1) {
